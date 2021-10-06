@@ -145,36 +145,32 @@ note_frequencies = {
     'g+7': 3322.438021294491,
 }
 
-tone = {
-    0: 1.0,
-    1: 2.0 ** (1.0 / 12.0),
-    2: 2.0 ** (2.0 / 12.0),
-    3: 2.0 ** (3.0 / 12.0),
-    4: 2.0 ** (4.0 / 12.0),
-    5: 2.0 ** (5.0 / 12.0),
-    6: 2.0 ** (6.0 / 12.0),
-    7: 2.0 ** (7.0 / 12.0),
-    8: 2.0 ** (8.0 / 12.0),
-    9: 2.0 ** (9.0 / 12.0),
-    10: 2.0 ** (10.0 / 12.0),
-    11: 2.0 ** (11.0 / 12.0),
-    12: 2.0
-}
+# Intervals
+P1 = d2 = 0
+m2 = A1 = 1
+M2 = d3 = 2
+m3 = A2 = 3
+M3 = d4 = 4
+P4 = A3 = 5
+A4 = d5 = 6
+P5 = d6 = 7
+m6 = A5 = 8
+M6 = d7 = 9
+m7 = A6 = 10
+M7 = d8 = 11
+P8 = A7 = 12
 
-P1 = d2 = tone[0]
-m2 = A1 = tone[1]
-M2 = d3 = tone[2]
-m3 = A2 = tone[3]
-M3 = d4 = tone[4]
-P4 = A3 = tone[5]
-A4 = d5 = tone[6]
-P5 = d6 = tone[7]
-m6 = A5 = tone[8]
-M6 = d7 = tone[9]
-m7 = A6 = tone[10]
-M7 = d8 = tone[11]
-P8 = A7 = tone[12]
 
+def get_interval_frequency(root, interval):
+    if interval == 0:
+        return root
+    if interval == 12:
+        return root * 2
+    else:
+        return root * 2 ** (interval / 12.0)
+
+
+# Scales
 major_hept = [0, 2, 4, 5, 7, 9, 11, 12]
 nat_minor_hept = [0, 2, 3, 5, 7, 8, 10, 12]
 major_pent = [0, 2, 4, 5, 9, 12]
