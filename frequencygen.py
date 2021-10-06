@@ -19,4 +19,7 @@ def get_frequencies(start, end):
     return frequency_dict
 
 
-pprint.pprint(get_frequencies(16.35160, 4186.009))
+c0 = 16.35160
+c8 = 4186.009
+
+pprint.pprint(get_frequencies(c0, c8))
