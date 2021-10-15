@@ -146,19 +146,38 @@ note_frequencies = {
 }
 
 # Intervals
+# Unison / Diminished 2nd
 P1 = d2 = 0
+# Minor 2nd / Augmented 1st
 m2 = A1 = 1
+# Major 2nd / Diminished 3rd
 M2 = d3 = 2
+# Minor 3rd / Augmented 2nd
 m3 = A2 = 3
+# Major 3rd / Diminished 4th
 M3 = d4 = 4
+# Perfect 4th / Augmented 3rd
 P4 = A3 = 5
+# Augmented 4th / Diminished 5th
 A4 = d5 = 6
+# Perfect 5th / Diminished 6th
 P5 = d6 = 7
+# Minor 6th / Augmented 5th
 m6 = A5 = 8
+# Major 6th / Diminished 7th
 M6 = d7 = 9
+# Minor 7th / Augmented 6th
 m7 = A6 = 10
+# Majoe 7th / Diminished 8th
 M7 = d8 = 11
+# Octave / Augmented 7th
 P8 = A7 = 12
+
+# Scales
+major_hept = [P1, M2, M3, P4, P5, M6, M7, P8]
+nat_minor_hept = [P1, M2, m3, P4, P5, m6, m7, P8]
+major_pent = [P1, M2, M3, P4, M6, P8]
+minor_pent = [P1, m3, P4, P5, m7, P8]
 
 
 def get_interval_frequency(root, interval):
@@ -168,13 +187,6 @@ def get_interval_frequency(root, interval):
         return root * 2
     else:
         return root * 2 ** (interval / 12.0)
-
-
-# Scales
-major_hept = [0, 2, 4, 5, 7, 9, 11, 12]
-nat_minor_hept = [0, 2, 3, 5, 7, 8, 10, 12]
-major_pent = [0, 2, 4, 5, 9, 12]
-minor_pent = [0, 3, 5, 7, 10, 12]
 
 
 class Oscillator(ABC):
