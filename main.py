@@ -187,31 +187,60 @@ def ionian(scale):
 
 
 def dorian(scale):
-    scale[2] = scale[2] - 1
-    scale[3] = scale[3] + 1
-    scale[6] = scale[6] - 1
-    scale[7] = scale[7] + 1
+    scale[2] -= 1
+    scale[6] -= 1
     return scale
 
 
 def phrygian(scale):
-    for i in range(0, 2):
-        scale.insert(0, scale.pop())
+    scale[1] -= 1
+    scale[2] -= 1
+    scale[5] -= 1
+    scale[6] -= 1
+    return scale
+
+
+def lydian(scale):
+    scale[3] += 1
+    return scale
+
+
+def mixolydian(scale):
+    scale[6] -= 1
+    return scale
+
+
+def aeolian(scale):
+    scale[2] -= 1
+    scale[5] -= 1
+    scale[6] -= 1
+    return scale
+
+
+def locrian(scale):
+    scale[1] -= 1
+    scale[2] -= 1
+    scale[4] -= 1
+    scale[5] -= 1
+    scale[6] -= 1
     return scale
 
 
 modes = {
+    'major': ionian,
     'ionian': ionian,
     'dorian': dorian,
     'phrygian': phrygian,
+    'lydian': lydian,
+    'mixolydian': mixolydian,
+    'minor': aeolian,
+    'aeolian': aeolian,
+    'locrian': locrian
 }
 
 
 def set_mode(scale, mode):
     return modes[mode](scale)
-
-
-print(set_mode(major_hept, 'dorian'))
 
 
 def get_interval_frequency(root, interval):
@@ -222,6 +251,17 @@ def get_interval_frequency(root, interval):
     else:
         return root * 2 ** (interval / 12.0)
 
+
+def get_scale_frequencies(root, mode):
+    scale_pattern = set_mode(major_hept, mode)
+    scale_frequencies = []
+    for degree in scale_pattern:
+        scale_frequencies.append(get_interval_frequency(root, degree))
+    return scale_frequencies
+
+
+# print(set_mode(major_hept, 'minor'))
+print(get_scale_frequencies(note_frequencies['c4'], 'minor'))
 
 # class Oscillator(ABC):
 #     def __init__(self, freq=440.0, phase=0, amp=1.0, sample_rate=44_100, wave_range=(-1, 1)):
