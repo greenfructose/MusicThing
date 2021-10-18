@@ -1,4 +1,5 @@
 # Maybe a synthesizer? Music generator?
+import pprint
 import math
 from abc import ABC, abstractmethod
 import numpy as np
@@ -168,10 +169,36 @@ m6 = A5 = 8
 M6 = d7 = 9
 # Minor 7th / Augmented 6th
 m7 = A6 = 10
-# Majoe 7th / Diminished 8th
+# Major 7th / Diminished 8th
 M7 = d8 = 11
-# Octave / Augmented 7th
-P8 = A7 = 12
+# Octave / Augmented 7th / Diminished 9th
+P8 = A7 = d9 = 12
+# Minor 9th / Augmented Octave
+m9 = A8 = 13
+# Major 9th / Diminished 10th
+M9 = d10 = 14
+# Minor 10th / Augmented 9th
+m10 = A9 = 15
+# Major 10th / Diminished 11th
+M10 = d11 = 16
+# Perfect 11th / Augmented 10th
+P11 = A10 = 17
+# Diminished 12th / Augmented 11th
+d12 = A11 = 18
+# Perfect 12th (Tritave) / Diminished 13th
+P12 = d13 = 19
+# Minor 13th / Augmented 12th
+m13 = A12 = 20
+# Major 13th / Diminished 14th
+M13 = d14 = 21
+# Minor 14th / Augmented 13th
+m14 = A13 = 22
+# Major 14th / Diminished 15th
+M14 = d15 = 23
+# Perfect 15th (Double Octave) / Augmented 14th
+P15 = A14 = 24
+# Augmented 15th
+A15 = 25
 
 # Scales
 major_hept = [P1, M2, M3, P4, P5, M6, M7, P8]
@@ -239,10 +266,12 @@ modes = {
 }
 
 
+# Sets the mode of the scale
 def set_mode(scale, mode):
     return modes[mode](scale)
 
 
+# Gets frequency of an interval from the root
 def get_interval_frequency(root, interval):
     if interval == 0:
         return root
@@ -252,6 +281,7 @@ def get_interval_frequency(root, interval):
         return root * 2 ** (interval / 12.0)
 
 
+# Generates a list of frequencies that make up the defined scale
 def get_scale_frequencies(root, mode):
     scale_pattern = set_mode(major_hept, mode)
     scale_frequencies = []
@@ -260,8 +290,18 @@ def get_scale_frequencies(root, mode):
     return scale_frequencies
 
 
-# print(set_mode(major_hept, 'minor'))
-print(get_scale_frequencies(note_frequencies['c4'], 'minor'))
+# Chord definitions
+major_triad = [P1, M3, P5]
+minor_triad = [P1, m3, P5]
+augmented_triad = [P1, M3, A5]
+diminished_triad = [P1, m3, d5]
+major_seventh = [P1, M3, P5, M7]
+dominant_seventh = [P1, M3, P5, m7]
+minor_seventh = [P1, m3, P5, m7]
+diminished_seventh = [P1, m3, d5, d7]
+half_diminished_seventh = [P1, m3, d5, m7]
+
+pprint.pprint(get_scale_frequencies(note_frequencies['c4'], 'dorian'))
 
 # class Oscillator(ABC):
 #     def __init__(self, freq=440.0, phase=0, amp=1.0, sample_rate=44_100, wave_range=(-1, 1)):
