@@ -43,7 +43,7 @@ def freq_list_to_midi_list(freq_list):
 
 
 chord_freq = get_chord_frequencies(note_frequencies['c4'], dominant_thirteen)
-scale_freq = get_scale_frequencies(note_frequencies['d3'], 'mixolydian')
+scale_freq = get_scale_frequencies(note_frequencies['c4'], 'major')
 chord_midi = freq_list_to_midi_list(chord_freq)
 scale_midi = freq_list_to_midi_list(scale_freq)
 # while i < 4:
@@ -52,26 +52,41 @@ scale_midi = freq_list_to_midi_list(scale_freq)
 #     time += duration
 #     i += 1
 # i = 0
-# Groups of 4 ascending
-j = 0
-for note in scale_midi[:5]:
-    # duration = random.randint(1, 2)
-    i = 0
-    while i < 4:
-        MyMIDI.addNote(track, channel, scale_midi[i + j], time, 1, volume)
-        time += duration
-        i += 1
-    j += 1
 
-# Groups of 4 descending
-j = len(scale_midi) - 1
-for note in scale_midi[3:]:
-    i = 0
-    while i < 4:
-        MyMIDI.addNote(track, channel, scale_midi[j - i], time, 1, volume)
-        time += duration
-        i += 1
-    j -= 1
+# Mary had a little lamb
+little_lamb_meter = [1, 1, 1, 1, 1, 1, 2, 1, 1, 2, 1, 1, 2, 1, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 4]
+little_lamb_intervals = [2, 1, 0, 1, 2, 2, 2, 1, 1, 1, 2, 2, 2, 2, 1, 0, 1, 2, 2, 2, 1, 1, 2, 1, 0]
+major_diatonic_chords = [major_triad, minor_triad, minor_triad, major_triad, major_triad, minor_triad, diminished_triad]
+little_lamb_thirds = [m]
+little_lamb_fiths = []
+i = 0
+for note in little_lamb_intervals:
+    duration = little_lamb_meter[i]
+    MyMIDI.addNote(track, channel, scale_midi[note], time, duration, volume)
+    MyMIDI.addNote(track, channel, scale_midi[note], time, duration, volume)
+    MyMIDI.addNote(track, channel, scale_midi[note], time, duration, volume)
+    time += duration
+    i += 1
+# Groups of 4 ascending
+# j = 0
+# for note in scale_midi[:5]:
+#     # duration = random.randint(1, 2)
+#     i = 0
+#     while i < 4:
+#         MyMIDI.addNote(track, channel, scale_midi[i + j], time, 1, volume)
+#         time += duration
+#         i += 1
+#     j += 1
+#
+# # Groups of 4 descending
+# j = len(scale_midi) - 1
+# for note in scale_midi[3:]:
+#     i = 0
+#     while i < 4:
+#         MyMIDI.addNote(track, channel, scale_midi[j - i], time, 1, volume)
+#         time += duration
+#         i += 1
+#     j -= 1
 MyMIDI.writeFile(memFile)
 with open('test.midi', 'wb') as output_file:
     MyMIDI.writeFile(output_file)
