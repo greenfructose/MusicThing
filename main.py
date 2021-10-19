@@ -49,8 +49,8 @@ for note in scale_midi:
     MyMIDI.addNote(track, channel, note, time, duration, volume)
     time += duration
 MyMIDI.writeFile(memFile)
-# with open('test.midi', 'wb') as output_file:
-#     MyMIDI.writeFile(output_file)
+with open('test.midi', 'wb') as output_file:
+    MyMIDI.writeFile(output_file)
 
 
 pygame.init()
