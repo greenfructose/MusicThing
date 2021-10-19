@@ -10,17 +10,19 @@ from io import StringIO
 import pygame
 import pygame.mixer
 from time import sleep
+import random
 
 memFile = BytesIO()
 MyMIDI = MIDIFile(1)
 track = 0
-time = 0
+time = 0.0
 channel = 0
 pitch = 60
 duration = 1
 volume = 100
 MyMIDI.addTrackName(track, time, "Sample Track")
-MyMIDI.addTempo(track, time, 120)
+MyMIDI.addTempo(track, time, 220)
+
 
 # def wave_to_file(wav, wav2=None, fname="temp.wav", amp=0.1, sample_rate=44100):
 #     wav = np.array(wav)
@@ -33,25 +35,46 @@ MyMIDI.addTempo(track, time, 120)
 #
 #     wavfile.write(fname, sample_rate, wav)
 
+def freq_list_to_midi_list(freq_list):
+    midi_list = []
+    for note in freq_list:
+        midi_list.append(midi.frequency_to_midi(note))
+    return midi_list
+
 
 chord_freq = get_chord_frequencies(note_frequencies['c4'], dominant_thirteen)
-scale_freq = get_scale_frequencies(note_frequencies['c4'], 'mixolydian')
-chord_midi = []
-scale_midi = []
-for note in chord_freq:
-    chord_midi.append(midi.frequency_to_midi(note))
-for note in scale_freq:
-    scale_midi.append(midi.frequency_to_midi(note))
-for note in chord_midi:
-    MyMIDI.addNote(track, channel, note, time, duration, volume)
-    time += duration
-for note in scale_midi:
-    MyMIDI.addNote(track, channel, note, time, duration, volume)
-    time += duration
+scale_freq = get_scale_frequencies(note_frequencies['c4'], 'ionian')
+chord_midi = freq_list_to_midi_list(chord_freq)
+scale_midi = freq_list_to_midi_list(scale_freq)
+# while i < 4:
+#     duration = random.randint(1, 2)
+#     MyMIDI.addNote(track, channel, chord_midi[i], time, duration, volume)
+#     time += duration
+#     i += 1
+# i = 0
+# Groups of 4 ascending
+j = 0
+for note in scale_midi[:5]:
+    # duration = random.randint(1, 2)
+    i = 0
+    while i < 4:
+        MyMIDI.addNote(track, channel, scale_midi[i + j], time, 1, volume)
+        time += duration
+        i += 1
+    j += 1
+
+# Groups of 4 descending
+j = len(scale_midi) - 1
+for note in scale_midi[3:]:
+    i = 0
+    while i < 4:
+        MyMIDI.addNote(track, channel, scale_midi[j - i], time, 1, volume)
+        time += duration
+        i += 1
+    j -= 1
 MyMIDI.writeFile(memFile)
 with open('test.midi', 'wb') as output_file:
     MyMIDI.writeFile(output_file)
-
 
 pygame.init()
 pygame.mixer.init()
