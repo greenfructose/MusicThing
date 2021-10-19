@@ -7,6 +7,9 @@ from pygame import midi
 from midiutil.MidiFile import MIDIFile
 from io import BytesIO
 from io import StringIO
+import pygame
+import pygame.mixer
+from time import sleep
 
 memFile = BytesIO()
 MyMIDI = MIDIFile(1)
@@ -31,18 +34,33 @@ MyMIDI.addTempo(track, time, 120)
 #     wavfile.write(fname, sample_rate, wav)
 
 
-chord_freq = get_chord_frequencies(note_frequencies['c5'], major_seventh)
+chord_freq = get_chord_frequencies(note_frequencies['c4'], dominant_thirteen)
+scale_freq = get_scale_frequencies(note_frequencies['c4'], 'mixolydian')
 chord_midi = []
+scale_midi = []
 for note in chord_freq:
     chord_midi.append(midi.frequency_to_midi(note))
-
+for note in scale_freq:
+    scale_midi.append(midi.frequency_to_midi(note))
 for note in chord_midi:
+    MyMIDI.addNote(track, channel, note, time, duration, volume)
+    time += duration
+for note in scale_midi:
     MyMIDI.addNote(track, channel, note, time, duration, volume)
     time += duration
 MyMIDI.writeFile(memFile)
 # with open('test.midi', 'wb') as output_file:
 #     MyMIDI.writeFile(output_file)
 
+
+pygame.init()
+pygame.mixer.init()
+memFile.seek(0)  # THIS IS CRITICAL, OTHERWISE YOU GET THAT ERROR!
+pygame.mixer.music.load(memFile)
+pygame.mixer.music.play()
+while pygame.mixer.music.get_busy():
+    sleep(1)
+print("Done!")
 
 # gen = WaveAdder(
 #     SineOscillator(freq=chord[0]),
