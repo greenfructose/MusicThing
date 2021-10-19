@@ -43,7 +43,7 @@ def freq_list_to_midi_list(freq_list):
 
 
 chord_freq = get_chord_frequencies(note_frequencies['c4'], dominant_thirteen)
-scale_freq = get_scale_frequencies(note_frequencies['c4'], 'ionian')
+scale_freq = get_scale_frequencies(note_frequencies['d3'], 'mixolydian')
 chord_midi = freq_list_to_midi_list(chord_freq)
 scale_midi = freq_list_to_midi_list(scale_freq)
 # while i < 4:
