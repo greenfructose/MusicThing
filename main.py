@@ -55,16 +55,40 @@ scale_midi = freq_list_to_midi_list(scale_freq)
 
 # Mary had a little lamb
 little_lamb_meter = [1, 1, 1, 1, 1, 1, 2, 1, 1, 2, 1, 1, 2, 1, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 4]
-little_lamb_intervals = [2, 1, 0, 1, 2, 2, 2, 1, 1, 1, 2, 2, 2, 2, 1, 0, 1, 2, 2, 2, 1, 1, 2, 1, 0]
+little_lamb_degrees = [2, 1, 0, 1, 2, 2, 2, 1, 1, 1, 2, 2, 2, 2, 1, 0, 1, 2, 2, 2, 1, 1, 2, 1, 0]
+
+
+def get_intervals_from_degrees(tune, mode):
+    interval_list = []
+    for degree in tune:
+        interval_list.append(mode[degree])
+    return interval_list
+
+
+little_lamb_intervals = get_intervals_from_degrees(little_lamb_degrees, major_hept)
+
 major_diatonic_chords = [major_triad, minor_triad, minor_triad, major_triad, major_triad, minor_triad, diminished_triad]
-little_lamb_thirds = [m]
-little_lamb_fiths = []
+
+
+def get_interval_from_degree(degree, mode):
+    return mode.index(degree)
+
+
+chord_interval_list = []
+x = 0
+for degree in little_lamb_degrees:
+    chord_interval_list.append([x + get_interval_from_degree(degree, major_hept)])
 i = 0
 for note in little_lamb_intervals:
+    # print(f"{note}  {chord_list[note][0]}")
+    # print(chord_list[note][1])
+    # print(chord_list[note][2])
+    chord = [x + note for x in major_diatonic_chords[note]]
+    print(chord)
     duration = little_lamb_meter[i]
-    MyMIDI.addNote(track, channel, scale_midi[note], time, duration, volume)
-    MyMIDI.addNote(track, channel, scale_midi[note], time, duration, volume)
-    MyMIDI.addNote(track, channel, scale_midi[note], time, duration, volume)
+    MyMIDI.addNote(track, channel, scale_midi[chord[0]], time, duration, volume)
+    MyMIDI.addNote(track, channel, scale_midi[chord[1]], time, duration, volume)
+    MyMIDI.addNote(track, channel, scale_midi[chord[2]], time, duration, volume)
     time += duration
     i += 1
 # Groups of 4 ascending
