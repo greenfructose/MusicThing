@@ -21,7 +21,7 @@ pitch = 60
 duration = 1
 volume = 100
 MyMIDI.addTrackName(track, time, "Sample Track")
-MyMIDI.addTempo(track, time, 220)
+MyMIDI.addTempo(track, time, 160)
 
 
 # def wave_to_file(wav, wav2=None, fname="temp.wav", amp=0.1, sample_rate=44100):
@@ -82,9 +82,14 @@ for iteration, note in enumerate(little_lamb_semitones):
     chord = [x + note for x in major_diatonic_chords[little_lamb_degrees[iteration]]]
     print(chord)
     duration = little_lamb_meter[i]
-    MyMIDI.addNote(track, channel, chord[0] + midi_scale_root, time, duration, volume)
-    MyMIDI.addNote(track, channel, chord[1] + midi_scale_root, time, duration, volume)
-    MyMIDI.addNote(track, channel, chord[2] + midi_scale_root, time, duration, volume)
+    b = time
+    if b == 0 or b == 4 or b == 12 or b == 16 or b == 20 or b == 28:
+        for part in major_triad:
+            MyMIDI.addNote(track, channel, part + (midi_scale_root - 12), time, 4, volume)
+    if b == 8 or b == 24:
+        for part in major_triad:
+            MyMIDI.addNote(track, channel, part + 7 + (midi_scale_root - 12), time, 4, volume)
+    MyMIDI.addNote(track, channel, note + midi_scale_root, time, 4, volume)
     time += duration
     i += 1
 # Groups of 4 ascending
