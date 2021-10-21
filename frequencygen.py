@@ -1,4 +1,3 @@
-
 def get_frequencies(start, end):
     notes = ['c', 'c+/d-', 'd', 'd+/e-', 'e', 'f', 'f+/g-', 'g', 'g+/a-', 'a', 'a+/b-', 'b']
     current_frequency = start
@@ -155,7 +154,7 @@ note_frequencies = {
     'g+7': 3322.438021294491,
 }
 
-# Intervals
+# Semitone Intervals
 # Unison / Diminished 2nd
 P1 = d2 = 0
 # Minor 2nd / Augmented 1st
@@ -299,7 +298,7 @@ def get_scale_frequencies(root, mode):
     return scale_frequencies
 
 
-# Chord definitions
+# Chord definitions in Semitones
 major_triad = [P1, M3, P5]
 minor_triad = [P1, m3, P5]
 augmented_triad = [P1, M3, A5]
@@ -335,4 +334,3 @@ def get_chord_frequencies(root, chord):
     for note in chord:
         chord_frequencies.append(get_interval_frequency(root, note))
     return chord_frequencies
-

@@ -46,6 +46,7 @@ chord_freq = get_chord_frequencies(note_frequencies['c4'], dominant_thirteen)
 scale_freq = get_scale_frequencies(note_frequencies['c4'], 'major')
 chord_midi = freq_list_to_midi_list(chord_freq)
 scale_midi = freq_list_to_midi_list(scale_freq)
+midi_scale_root = scale_midi[0]
 # while i < 4:
 #     duration = random.randint(1, 2)
 #     MyMIDI.addNote(track, channel, chord_midi[i], time, duration, volume)
@@ -58,37 +59,32 @@ little_lamb_meter = [1, 1, 1, 1, 1, 1, 2, 1, 1, 2, 1, 1, 2, 1, 1, 1, 1, 1, 1, 2,
 little_lamb_degrees = [2, 1, 0, 1, 2, 2, 2, 1, 1, 1, 2, 2, 2, 2, 1, 0, 1, 2, 2, 2, 1, 1, 2, 1, 0]
 
 
-def get_intervals_from_degrees(tune, mode):
-    interval_list = []
-    for degree in tune:
-        interval_list.append(mode[degree])
-    return interval_list
+def degrees_to_semitones(degree_list, mode):
+    semitone_list = []
+    if mode == 'major':
+        for degree in degree_list:
+            semitone_list.append(degree * 2)
+
+    return semitone_list
 
 
-little_lamb_intervals = get_intervals_from_degrees(little_lamb_degrees, major_hept)
+little_lamb_semitones = degrees_to_semitones(little_lamb_degrees, 'major')
 
 major_diatonic_chords = [major_triad, minor_triad, minor_triad, major_triad, major_triad, minor_triad, diminished_triad]
 
 
-def get_interval_from_degree(degree, mode):
-    return mode.index(degree)
-
-
-chord_interval_list = []
-x = 0
-for degree in little_lamb_degrees:
-    chord_interval_list.append([x + get_interval_from_degree(degree, major_hept)])
 i = 0
-for note in little_lamb_intervals:
+for iteration, note in enumerate(little_lamb_semitones):
     # print(f"{note}  {chord_list[note][0]}")
     # print(chord_list[note][1])
     # print(chord_list[note][2])
-    chord = [x + note for x in major_diatonic_chords[note]]
+    print(iteration)
+    chord = [x + note for x in major_diatonic_chords[little_lamb_degrees[iteration]]]
     print(chord)
     duration = little_lamb_meter[i]
-    MyMIDI.addNote(track, channel, scale_midi[chord[0]], time, duration, volume)
-    MyMIDI.addNote(track, channel, scale_midi[chord[1]], time, duration, volume)
-    MyMIDI.addNote(track, channel, scale_midi[chord[2]], time, duration, volume)
+    MyMIDI.addNote(track, channel, chord[0] + midi_scale_root, time, duration, volume)
+    MyMIDI.addNote(track, channel, chord[1] + midi_scale_root, time, duration, volume)
+    MyMIDI.addNote(track, channel, chord[2] + midi_scale_root, time, duration, volume)
     time += duration
     i += 1
 # Groups of 4 ascending
